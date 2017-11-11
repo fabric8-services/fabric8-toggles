@@ -1,0 +1,5 @@
+= Fabric8 Toggles
+
+Unleash-server bundled for Openshift deployment
+
+Loosley based on https://github.com/Unleash/unleash-docker
