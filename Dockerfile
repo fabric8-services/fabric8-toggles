@@ -6,13 +6,14 @@ RUN useradd  -s /bin/bash ${F8_USER_NAME}
 
 RUN yum install -y epel-release && yum install -y nodejs && yum clean all 
 
-USER ${F8_USER_NAME}
-
 WORKDIR /home/${F8_USER_NAME}
 COPY package.json .
 RUN npm install --production
 
 COPY . .
+
+RUN chmod -R +777 /home/${F8_USER_NAME}
+USER ${F8_USER_NAME}
 
 EXPOSE 8080
 
