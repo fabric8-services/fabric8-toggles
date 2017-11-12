@@ -6,6 +6,8 @@ set -x
 # Exit on error
 set -e
 
+REGISTRY="push.registry.devshift.net"
+
 function tag_push() {
   TARGET=$1
   docker tag f8toggles-deploy $TARGET
@@ -32,9 +34,6 @@ function login() {
   fi
 }
 
-TAG=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
-REGISTRY="push.registry.devshift.net"
-
  # We need to disable selinux for now, XXX
 /usr/sbin/setenforce 0
 
@@ -47,9 +46,11 @@ yum -y install \
 
 service docker start
 
+load_jenkins_vars
+TAG=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
+
 docker build -t f8toggles-deploy -f Dockerfile .
 
-load_jenkins_vars
 login
 tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:$TAG
 tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:latest
