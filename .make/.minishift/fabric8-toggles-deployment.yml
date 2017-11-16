@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: fabric8-toggles
+    name: f8toggles
+  name: fabric8-toggles
+  namespace: f8toggles
+spec:
+  replicas: 1
+  selector:
+    app: fabric8-toggles
+    name: f8toggles
+  template:
+    metadata:
+      labels:
+        app: fabric8-toggles
+        name: f8toggles
+    spec:
+      containers:
+        - env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: database.url
+          image: registry.devshift.net/fabric8-services/fabric8-toggles:latest
+          imagePullPolicy: Always
+          name: f8toggles
+          ports:
+          - containerPort: 4242
+            protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /health
+              port: 4242
+              scheme: HTTP
+            initialDelaySeconds: 1
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+
+
+
