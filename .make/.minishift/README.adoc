@@ -53,16 +53,21 @@ po/f8toggle-db-1-0rtkj   1/1       Running   0          14s
 
 === Build the docker image for the JS server
 
+> Note: you can skip this step by pulling an existing image, in fabric8-toggles-deployment.yml change `image: 172.30.1.1:5000/f8toggles/fabric8togglesdocker:latest`
+to `image: registry.devshift.net/fabric8-services/fabric8-toggles:latest`
+
 Using the https://medium.com/@xcoulon/tips-for-minikube-minishift-users-including-myself-accessing-the-clusters-docker-deamon-c15032a60b08[the cluster’s Docker deamon], 
 we're going to build the docker image and make it available directly inside the minishift local registry. 
 Go to the ../../Dockerfile[Dockerfile] folder and type:
 ```
 cd ../..
 eval $(minishift docker-env)
-docker images
-docker build -t fabric8-toggle:latest .
+docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)
+docker build -t fabric8togglesdocker:latest .
+docker tag fabric8togglesdocker $(minishift openshift registry)/f8toggles/fabric8togglesdocker
+docker push $(minishift openshift registry)/f8toggles/fabric8togglesdocker
 ```
-We will use `fabric8-toggle:latest` in our deployment script.
+We will use `fabric8togglesdocker:latest` in our deployment script.
 Let's deploy...
 
 === Deploy the nodejs server
@@ -74,8 +79,6 @@ cd .make/.minishift/
 oc create -f fabric8-toggles-deployment.yml
 # fabric8-toggles (nodejs server) service
 oc create -f fabric8-toggles-service.yml
-# Set the DATABASE_URL env variable (expected by our nodejs server)
-oc set env dc/fabric8-toggles DATABASE_URL='postgres://user:password@f8toggle-db:5432/unleashdb'
 # create route to access
 oc create -f fabric8-toggles-route.yml 
 ```
@@ -99,7 +102,7 @@ unleashdb=> \dt+
  public | strategies          | table | user  | 16 kB      | 
 (7 rows)
 ```
- 
+
 Once the route is created, go to f8toggle admin console:
 
 http://fabric8-toggles-f8toggles.<YOUR_IP>.nip.io (as displayed in your minishit console).
@@ -107,3 +110,8 @@ where:
 * <YOUR_IP> could be find out by `minishift ip`. (it's also display in the log with the `minishift start`command)
 * use developer /developer as username / password
 
+If something goes wrong, to check logs:
+```
+oc logs -f fabric8-toggles-1-vvtm2
+```
+where fabric8-toggles-1-vvtm2 is your ephemeral pod id.
