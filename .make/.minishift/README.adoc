@@ -60,9 +60,9 @@ Go to the ../../Dockerfile[Dockerfile] folder and type:
 cd ../..
 eval $(minishift docker-env)
 docker images
-docker build -t fabric8toggle:latest .
+docker build -t fabric8-toggle:latest .
 ```
-We will use `fabric8toggle:latest` in our deployment script.
+We will use `fabric8-toggle:latest` in our deployment script.
 Let's deploy...
 
 === Deploy the nodejs server
