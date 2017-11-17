@@ -60,7 +60,7 @@ Go to the ../../Dockerfile[Dockerfile] folder and type:
 cd ../..
 eval $(minishift docker-env)
 docker images
-docker build -t fabric8-toggles:latest .
+docker build -t fabric8toggle:latest .
 ```
 We will use `fabric8toggle:latest` in our deployment script.
 Let's deploy...
@@ -106,4 +106,4 @@ http://fabric8-toggles-f8toggles.<YOUR_IP>.nip.io (as displayed in your minishit
 where: 
 * <YOUR_IP> could be find out by `minishift ip`. (it's also display in the log with the `minishift start`command)
 * use developer /developer as username / password
- 
+
