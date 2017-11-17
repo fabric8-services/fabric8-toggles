@@ -24,7 +24,7 @@ spec:
               secretKeyRef:
                 name: f8toggles
                 key: database.url
-          image: registry.devshift.net/fabric8-services/fabric8-toggles:latest
+          image: fabric8-toggles:latest
           imagePullPolicy: Always
           name: f8toggles
           ports:
