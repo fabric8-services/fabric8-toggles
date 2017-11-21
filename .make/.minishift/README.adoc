@@ -19,7 +19,7 @@ oc login -u developer:developer
 
 == Let's deploy `fabric8-toggles` server in OpenShift
 
-Our ` fabric8-toggles` server needs a postgres database and a nodejs server.
+Our `fabric8-toggles` server needs a postgres database and a nodejs server.
 We're going to deploy our server in dev mode using minishift.
 
 Let's start with...
@@ -107,6 +107,7 @@ Once the route is created, go to f8toggle admin console:
 
 http://fabric8-toggles-f8toggles.<YOUR_IP>.nip.io (as displayed in your minishit console).
 where: 
+
 * <YOUR_IP> could be find out by `minishift ip`. (it's also display in the log with the `minishift start`command)
 * use developer /developer as username / password
 
