@@ -1,5 +1,8 @@
-= Fabric8 Toggles
+= Fabric8 toggles
 
-Unleash-server bundled for Openshift deployment
+== Overview
 
-Loosely based on https://github.com/Unleash/unleash-docker
+Unleash-server bundled for Openshift deployment Loosely based on https://github.com/Unleash/unleash-docker
+
+== Docker build && minishift deployment
+Go to link:./minishift/README.adoc[minishift deployment instructions]
