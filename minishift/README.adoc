@@ -30,13 +30,19 @@ docker login -u developer -p $(oc whoami -t) $(minishift openshift registry)
 docker tag push.registry.devshift.net/fabric8-services/fabric8-toggles 172.30.1.1:5000/fabric8/fabric8-toggles:latest
 docker push 172.30.1.1:5000/fabric8/fabric8-toggles:latest
 ```
-
 * clone the link:https://github.com/xcoulon/fabric8-minishift[fabirc8-minishift] repository:
 This repositoryhold kedge yml files to deploy on fabric8 on minishift.
 ```
 git clone git@github.com:xcoulon/fabric8-minishift.git
 ```
+* Configure GH app to test it locally
+Go to https://github.com/settings/applications/new
+Create a new developer application, in the `Authorization callback URL`, 
+enter the url where toggles server is deployed and append it with `/api/auth/callback` as below
+`http://toggles-fabric8.MINISHIT_URL/api/auth/callback`.
+
 * Deploy on minishift
+Use the Client ID, Client Secret and Authorization callback URL in the `toggles.yml` file
 ```
 cd fabric8-minishift
 make deploy-toggles
