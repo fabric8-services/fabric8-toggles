@@ -41,14 +41,20 @@ objects:
                 name: f8toggles
                 key: database.url
           - name: GITHUB_CLIENT_ID
-            value: 1776877589a8e28f67d3
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: github.client.id          
           - name: GITHUB_CLIENT_SECRET
             valueFrom:
               secretKeyRef:
                 name: f8toggles
                 key: github.client.secret
           - name: GITHUB_CALLBACK_URL
-            value: http://f8toggles/api/auth/callback                                              
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: github.callback.url                                             
           image: registry.devshift.net/fabric8-services/fabric8-toggles:${IMAGE_TAG}
           imagePullPolicy: Always
           name: f8toggles
