@@ -31,7 +31,7 @@ docker tag push.registry.devshift.net/fabric8-services/fabric8-toggles 172.30.1.
 docker push 172.30.1.1:5000/fabric8/fabric8-toggles:latest
 ```
 * clone the link:https://github.com/xcoulon/fabric8-minishift[fabirc8-minishift] repository:
-This repositoryhold kedge yml files to deploy on fabric8 on minishift.
+This repository holds kedge yml files to deploy on fabric8 on minishift.
 ```
 git clone git@github.com:xcoulon/fabric8-minishift.git
 ```
