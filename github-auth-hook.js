@@ -36,10 +36,10 @@ function enableGitHubOAuth(app) {
     passport.serializeUser((user, done) => done(null, user));
     passport.deserializeUser((user, done) => done(null, user));
     
-    app.get('/api/admin/login', passport.authenticate('github'));
+    app.get('api/admin/login', passport.authenticate('github'));
 
     app.get(
-        '/api/auth/callback',
+        'api/auth/callback',
         passport.authenticate('github', {
             failureRedirect: '/api/admin/error-login',
         }),
@@ -58,7 +58,7 @@ function enableGitHubOAuth(app) {
                 .status('401')
                 .json(
                     new AuthenticationRequired({
-                        path: '/api/admin/login',
+                        path: 'api/admin/login',
                         type: 'custom',
                         message: `You have to identify yourself in order to use Unleash. 
                         Click the button and follow the instructions.`,
