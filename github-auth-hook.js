@@ -30,16 +30,21 @@ passport.use(
 );
 
 function enableGitHubOAuth(app) {
+
     app.use(passport.initialize());
     app.use(passport.session());
 
-    passport.serializeUser((user, done) => done(null, user));
-    passport.deserializeUser((user, done) => done(null, user));
+    passport.serializeUser((user, done) => {
+        done(null, user);
+        });
+    passport.deserializeUser((user, done) => {     
+        done(null, user);
+        });
  
     app.get('/api/admin/login', passport.authenticate('github'));
     let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
     app.get(
-        'api/auth/callback',
+        '/api/auth/callback',
         passport.authenticate('github', {
             failureRedirect: `${context}/api/admin/error-login`,
         }),
