@@ -35,17 +35,17 @@ function enableGitHubOAuth(app) {
 
     passport.serializeUser((user, done) => done(null, user));
     passport.deserializeUser((user, done) => done(null, user));
-    
-    app.get('api/admin/login', passport.authenticate('github'));
-
+ 
+    app.get('/api/admin/login', passport.authenticate('github'));
+    let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
     app.get(
         'api/auth/callback',
         passport.authenticate('github', {
-            failureRedirect: '/api/admin/error-login',
+            failureRedirect: `${context}/api/admin/error-login`,
         }),
         (req, res) => {
             // Successful authentication, redirect to your app.
-            res.redirect('/');
+            res.redirect(`${context}/`);
         }
     );
 
