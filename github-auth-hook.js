@@ -6,14 +6,15 @@ const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
 
 passport.use(
-    new GitHubStrategy(
-        {
+    new GitHubStrategy({
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
             callbackURL: process.env.GITHUB_CALLBACK_URL,
+            scope: ['read:org'],
         },
 
         (accessToken, refreshToken, profile, done) => {
+            console.log("Access token: " + accessToken)
             if (!profile.emails) {
                 // user can choose to not display any email, then use a default one as unleash required it
                 profile.emails.push(`${displayName}@unknown.com`);
@@ -36,11 +37,11 @@ function enableGitHubOAuth(app) {
 
     passport.serializeUser((user, done) => {
         done(null, user);
-        });
-    passport.deserializeUser((user, done) => {     
+    });
+    passport.deserializeUser((user, done) => {
         done(null, user);
-        });
- 
+    });
+
     app.get('/api/admin/login', passport.authenticate('github'));
     let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
     app.get(
