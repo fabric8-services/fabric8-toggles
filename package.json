@@ -4,7 +4,7 @@
 	"description": "Docker images for unleash.",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
+		"start": "NODE_ENV=production unleash",
 		"test:ci": "echo 'no tests for unleash-docker';"
 	},
 	"engines": {
@@ -13,7 +13,6 @@
 	"author": "",
 	"license": "Apache-2.0",
 	"dependencies": {
-		"passport-github": "^1.1.0",
-		"unleash-server": "3.0.0"
+		"unleash-server": "3.0.0-alpha.7"
 	}
 }
