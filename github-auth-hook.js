@@ -103,6 +103,7 @@ function enableGitHubOAuth(app) {
                     req.session.error = message;
                     return res.redirect(`${context}/#/features`);
                 } else {
+                    req.session.user = user;
                     return res.redirect(`${context}/`);
                 }
             })(req, res, next);
@@ -122,7 +123,8 @@ function enableGitHubOAuth(app) {
                     })
                 )
                 .end();
-        } else if (req.user) {
+        } else if (req.session.user) {
+            req.user = req.session.user;
             next();
         } else {
             // Instruct unleash-frontend to pop-up auth dialog
