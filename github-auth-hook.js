@@ -6,6 +6,9 @@ const passport = require('passport');
 const request = require('request');
 const GitHubStrategy = require('passport-github').Strategy;
 
+let githubOrg = process.env.GITHUB_ORG ? process.env.GITHUB_ORG : 'rhdt-toggles-test';
+let githubOrgTeam = process.env.GITHUB_ORG_TEAM ? process.env.GITHUB_ORG_TEAM : 'toggles-admin-test';
+
 passport.use(
     new GitHubStrategy({
             clientID: process.env.GITHUB_CLIENT_ID,
@@ -19,10 +22,6 @@ passport.use(
                 // user can choose to not display any email, then use a default one as unleash required it
                 profile.emails.push(`${displayName}@unknown.com`);
             }
-
-            let githubOrg = process.env.GITHUB_ORG ? process.env.GITHUB_ORG : 'rhdt-toggles-test';
-            let githubOrgTeam = process.env.GITHUB_ORG_TEAM ? process.env.GITHUB_ORG : 'toggles-admin-test';
-
             // Successful authentication, now check if the authenticated user is a member of the GH org/team
             console.log(`Fetching teams on https://api.github.com/orgs/${githubOrg}/teams with access token ${accessToken}`);
             request({
@@ -35,10 +34,10 @@ passport.use(
                 function(error, response, body) {
                     if (error) {
                         console.error('access to GH org failed:', error);
-                        return done(error, null);
+                        return done(error);
                     } else if (response.statusCode != 200) {
                         console.error('access to GH org failed: ', response.statusCode, response.body);
-                        return done(response.body, null);
+                        return done(null, false, { message: `unable to get the teams in the ${githubOrg} organization.` });
                     }
                     console.log('access to GH org done. Server responded with:', response.body);
                     let jsonBody = JSON.parse(response.body)
@@ -57,16 +56,17 @@ passport.use(
                                 function(error, response, body) {
                                     if (error) {
                                         console.error('access to GH team failed:', error);
-                                        return done(error, null);
+                                        return done(error);
                                     } else if (response.statusCode != 204) {
                                         console.error('access to GH team failed: ', response.statusCode, response.body);
-                                        return done(response.body, null);
+                                        return done(null, false, { message: 'User does not belong to the admin team.' });
                                     }
                                     // user belongs to the org/team
                                     done(null,
                                         new User({
                                             name: profile.displayName,
                                             email: profile.emails[0].value,
+                                            accessToken: accessToken,
                                         })
                                     );
                                 }
@@ -75,9 +75,12 @@ passport.use(
                     });
                 }
             );
+
+
         }
     )
 );
+
 
 
 function enableGitHubOAuth(app) {
@@ -93,11 +96,12 @@ function enableGitHubOAuth(app) {
     });
 
     app.get('/api/admin/login', passport.authenticate('github'));
+
     let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
 
     app.get(
         '/api/auth/callback',
-        passport.authenticate('github', {
+        passport.authorize('github', {
             failureRedirect: `${context}/api/admin/error-login`,
         }),
         (req, res) => {
@@ -106,6 +110,7 @@ function enableGitHubOAuth(app) {
         });
 
     app.use('/api/admin/', (req, res, next) => {
+        console.log(`Calling /api/admin with req=${req} and res=${res}`)
         if (req.user) {
             next();
         } else {
