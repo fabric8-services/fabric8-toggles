@@ -8,7 +8,6 @@ const GitHubStrategy = require('passport-github').Strategy;
 
 let githubOrg = process.env.GITHUB_ORG ? process.env.GITHUB_ORG : 'rhdt-toggles-test';
 let githubTeam = process.env.GITHUB_TEAM ? process.env.GITHUB_TEAM : 'toggles-admin-test';
-let devMode = process.env.DEV_MODE ? (process.env.DEV_MODE == 'true') : false;
 
 passport.use(
     new GitHubStrategy({
@@ -29,12 +28,6 @@ passport.use(
             });
 
             // Successful authentication, now check if the authenticated user is a member of the GH org/team, unless `dev mode` is enabled
-            if (devMode) {
-                console.log(`DEV_MODE is enabled - skipping the GH org/teams verification.`);
-                return done(null, user);
-            }
-
-
             console.log(`Fetching teams on https://api.github.com/orgs/${githubOrg}/teams with access token ${accessToken}`);
             request({
                     url: `https://api.github.com/orgs/${githubOrg}/teams`,

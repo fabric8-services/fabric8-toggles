@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node index.js",
+		"start:debug": "node --inspect-brk index.js",
 		"test:ci": "echo 'no tests for unleash-docker';"
 	},
 	"engines": {
