@@ -56,17 +56,20 @@ objects:
                 name: f8toggles
                 key: github.callback.url 
           - name: TOGGLES_CONTEXT
-                secretKeyRef:
-                  name: f8toggles
-                  key: toggles.context                                            
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: toggles.context                                            
           - name: GITHUB_ORG
-                secretKeyRef:
-                  name: f8toggles
-                  key: github.auth.org                                            
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: github.auth.org                                            
           - name: GITHUB_TEAM
-                secretKeyRef:
-                  name: f8toggles
-                  key: github.auth.team                                           
+            valueFrom:
+              secretKeyRef:
+                name: f8toggles
+                key: github.auth.team                                           
           image: registry.devshift.net/fabric8-services/fabric8-toggles:${IMAGE_TAG}
           imagePullPolicy: Always
           name: f8toggles
