@@ -7,7 +7,7 @@ const request = require('request');
 const GitHubStrategy = require('passport-github').Strategy;
 
 let githubOrg = process.env.GITHUB_ORG ? process.env.GITHUB_ORG : 'rhdt-toggles-test';
-let githubOrgTeam = process.env.GITHUB_ORG_TEAM ? process.env.GITHUB_ORG_TEAM : 'toggles-admin-test';
+let githubTeam = process.env.GITHUB_TEAM ? process.env.GITHUB_TEAM : 'toggles-admin-test';
 let devMode = process.env.DEV_MODE ? (process.env.DEV_MODE == 'true') : false;
 
 passport.use(
@@ -54,7 +54,7 @@ passport.use(
                     console.log('access to GH org done. Server responded with:', response.body);
                     let jsonBody = JSON.parse(response.body)
                     jsonBody.forEach(team => {
-                        if (team.name == githubOrgTeam) {
+                        if (team.name == githubTeam) {
 
                             console.log('found team URL: ', team.members_url);
                             let teamMemberURL = team.members_url.replace("{/member}", `/${profile.username}`);
@@ -72,7 +72,7 @@ passport.use(
                                         return done(null, false, { message: error });
                                     } else if (response.statusCode != 204) {
                                         console.error('access to GH team failed: ', response.statusCode, response.body);
-                                        return done(null, false, { message: `User does not belong to the ${githubOrgTeam} team.` });
+                                        return done(null, false, { message: `User does not belong to the ${githubTeam} team.` });
                                     }
                                     // user belongs to the org/team
                                     done(null, user);
