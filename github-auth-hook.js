@@ -121,7 +121,7 @@ function enableGitHubOAuth(app) {
                 .status('401')
                 .json(
                     new AuthenticationRequired({
-                        path: '/api/admin/login',
+                        path: `${context}/api/admin/login`,
                         type: 'none',
                         message: req.session.error,
                     })
@@ -136,7 +136,7 @@ function enableGitHubOAuth(app) {
                 .status('401')
                 .json(
                     new AuthenticationRequired({
-                        path: '/api/admin/login',
+                        path: `${context}/api/admin/login`,
                         type: 'custom',
                         message: `You have to identify yourself in order to use Unleash. 
                         Click the button and follow the instructions.`,
