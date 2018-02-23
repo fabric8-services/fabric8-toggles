@@ -1,5 +1,51 @@
 = Fabric8 Toggles
 
-Unleash-server bundled for Openshift deployment
+Unleash-server bundled for Openshift deployment. Loosely based on https://github.com/Unleash/unleash-docker
 
-Loosely based on https://github.com/Unleash/unleash-docker
+== Build
+```
+npm install
+```
+
+== Dev deployment
+
+=== Pre-requisites
+2 options to run the DB:
+* either Deploy on minishift see https://github.com/xcoulon/fabric8-minishift/blob/master/toggles-db.yml[toggles-db.yml]
+* or run locally postgres
+
+=== Without authentification
+* to test in dev mode no GH auth/authz
+```
+DEV_MODE=true DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb npm start
+```
+where MINISHIFT_IP is where you DB is deployed and 31210 the port where it's running. It could be minishift or locally.
+
+* debug
+```
+DEV_MODE=true DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb npm run start:debug
+```
+Open chrome with `chrome://inspect` and choose Remote Target to open a chrome too.
+
+=== With GH auth/authz
+
+==== pre-requisites
+
+You need to configure GH OAuth app to test it locally:
+1. Go to https://github.com/settings/applications/new[OAuth app]
+1. Create a new developer application, in the `Authorization callback URL`, 
+1. Enter the url `http://localhost:4242/api/auth/callback`.
+
+You'll get a page with `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
+
+> NOTE: The URL you enter should should match the env variable `GITHUB_CALLBACK_URL` you'll use to start the server 
+
+=== Run
+To test with GH authorization targetting prod-preview GH teams
+
+```
+DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb GITHUB_CLIENT_ID=YYY GITHUB_CLIENT_SECRET=XXX GITHUB_CALLBACK_URL=http://localhost:4242/api/auth/callback npm start
+```
+
+== Deployment on minishift
+TODO
