@@ -8,6 +8,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 
 let githubOrg = process.env.GITHUB_ORG ? process.env.GITHUB_ORG : 'rhdt-toggles-test';
 let githubOrgTeam = process.env.GITHUB_ORG_TEAM ? process.env.GITHUB_ORG_TEAM : 'toggles-admin-test';
+let devMode = process.env.DEV_MODE ? (process.env.DEV_MODE == 'true') : false;
 
 passport.use(
     new GitHubStrategy({
@@ -22,7 +23,18 @@ passport.use(
                 // user can choose to not display any email, then use a default one as unleash required it
                 profile.emails.push(`${displayName}@unknown.com`);
             }
-            // Successful authentication, now check if the authenticated user is a member of the GH org/team
+            let user = new User({
+                name: profile.displayName,
+                email: profile.emails[0].value,
+            });
+
+            // Successful authentication, now check if the authenticated user is a member of the GH org/team, unless `dev mode` is enabled
+            if (devMode) {
+                console.log(`DEV_MODE is enabled - skipping the GH org/teams verification.`);
+                return done(null, user);
+            }
+
+
             console.log(`Fetching teams on https://api.github.com/orgs/${githubOrg}/teams with access token ${accessToken}`);
             request({
                     url: `https://api.github.com/orgs/${githubOrg}/teams`,
@@ -43,10 +55,7 @@ passport.use(
                     let jsonBody = JSON.parse(response.body)
                     jsonBody.forEach(team => {
                         if (team.name == githubOrgTeam) {
-                            let user = new User({
-                                name: profile.displayName,
-                                email: profile.emails[0].value,
-                            });
+
                             console.log('found team URL: ', team.members_url);
                             let teamMemberURL = team.members_url.replace("{/member}", `/${profile.username}`);
                             console.log('using team URL: ', teamMemberURL);
@@ -60,7 +69,7 @@ passport.use(
                                 function(error, response, body) {
                                     if (error) {
                                         console.error('access to GH team failed:', error);
-                                        return done(null, false, { message: error});
+                                        return done(null, false, { message: error });
                                     } else if (response.statusCode != 204) {
                                         console.error('access to GH team failed: ', response.statusCode, response.body);
                                         return done(null, false, { message: `User does not belong to the ${githubOrgTeam} team.` });
@@ -97,20 +106,22 @@ function enableGitHubOAuth(app) {
 
     // use custom callback http://www.passportjs.org/docs/authenticate/#custom-callback to better deal with error message
     app.get('/api/auth/callback', (req, res, next) => {
-            passport.authenticate('github', (err, user, info) => {
-                let message = info.message;
-                if(!user) {
-                    req.session.error = message;
-                    return res.redirect(`${context}/#/features`);
-                } else {
-                    req.session.user = user;
-                    return res.redirect(`${context}/`);
-                }
-            })(req, res, next);
-        });
-    
+        passport.authenticate('github', (err, user, info) => {
+            console.log(`Calling /api/auth/callback with session user=${user}, info=${info} and error=${err}`)
+            let message = info.message;
+            if (!user) {
+                req.session.error = message;
+                req.logout();
+            } else {
+                req.session.error = null; // reset the error if the a previous session is used
+                req.session.user = user;
+            }
+            return res.redirect(`${context}/`);
+        })(req, res, next);
+    });
+
     app.use('/api/admin/', (req, res, next) => {
-        console.log(`Calling /api/admin with req=${req} and res=${res}`)
+        console.log(`Calling /api/admin with session user=${req.session.user} and error=${req.session.error}`)
         if (req.session.error) {
             // todo with 403 and AuthorizationRequired - once the ui supports it
             return res
