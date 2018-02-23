@@ -95,7 +95,7 @@ function enableGitHubOAuth(app) {
 
     app.get('/api/admin/login', passport.authenticate('github'));
 
-    let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
+    let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '/toggles';
 
     // use custom callback http://www.passportjs.org/docs/authenticate/#custom-callback to better deal with error message
     app.get('/api/auth/callback', (req, res, next) => {
