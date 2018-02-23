@@ -55,11 +55,11 @@ objects:
               secretKeyRef:
                 name: f8toggles
                 key: github.callback.url 
-          - name: TOGGLES_CONTEXT
-            valueFrom:
-              secretKeyRef:
-                name: f8toggles
-                key: toggles.context                                            
+          # - name: TOGGLES_CONTEXT
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: f8toggles
+          #       key: toggles.context                                            
           # - name: GITHUB_ORG
           #   valueFrom:
           #     secretKeyRef:
