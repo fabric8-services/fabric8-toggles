@@ -42,7 +42,7 @@ passport.use(
                         return done(null, false, { message: error });
                     } else if (response.statusCode != 200) {
                         console.error('access to GH org failed: ', response.statusCode, response.body);
-                        return done(null, false, { message: `Unable to get the teams in the ${githubOrg} organization.` });
+                        return done(null, false, { message: `Unable to get the teams in the ${githubOrg} organization. Please contact your team admin and ask her to add you.` });
                     }
                     console.log('access to GH org done. Server responded with:', response.body);
                     let jsonBody = JSON.parse(response.body)
