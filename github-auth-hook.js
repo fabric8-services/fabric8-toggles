@@ -145,6 +145,10 @@ function enableGitHubOAuth(app) {
                 .end();
         }
     });
+    app.get('/api/admin/user/logout', (req, res, next) => {
+        // without that route defined, unleash admin will redirect to logout without being proxy-aware
+        return res.redirect(`${context}/admin/user/logout`);
+    });
 }
 
 module.exports = enableGitHubOAuth;
