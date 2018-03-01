@@ -28,7 +28,7 @@ passport.use(
             });
 
             // Successful authentication, now check if the authenticated user is a member of the GH org/team, unless `dev mode` is enabled
-            console.log(`Fetching teams on https://api.github.com/orgs/${githubOrg}/teams with access token ${accessToken}`);
+            console.log(`Fetching teams on https://api.github.com/orgs/${githubOrg}/teams`);
             request({
                     url: `https://api.github.com/orgs/${githubOrg}/teams`,
                     headers: {
@@ -44,14 +44,12 @@ passport.use(
                         console.error('access to GH org failed: ', response.statusCode, response.body);
                         return done(null, false, { message: `Unable to get the teams in the ${githubOrg} organization. Please contact your team admin and ask her to add you.` });
                     }
-                    console.log('access to GH org done. Server responded with:', response.body);
+                    //console.log('access to GH org done. Server responded with:', response.body);
                     let jsonBody = JSON.parse(response.body)
                     jsonBody.forEach(team => {
                         if (team.name == githubTeam) {
-
-                            // console.log('found team URL: ', team.members_url);
                             let teamMemberURL = team.members_url.replace("{/member}", `/${profile.username}`);
-                            // console.log('using team URL: ', teamMemberURL);
+                            console.log(`using team URL: ${teamMemberURL} to check for user '${profile.username}' in team '${githubTeam}'... `);
                             request({
                                     url: teamMemberURL,
                                     headers: {
@@ -93,7 +91,7 @@ function enableGitHubOAuth(app) {
 
     app.get('/api/admin/login', passport.authenticate('github'));
 
-    let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '/';
+    let context = process.env.TOGGLES_CONTEXT ? process.env.TOGGLES_CONTEXT : '';
 
     // use custom callback http://www.passportjs.org/docs/authenticate/#custom-callback to better deal with error message
     app.get('/api/auth/callback', (req, res, next) => {
