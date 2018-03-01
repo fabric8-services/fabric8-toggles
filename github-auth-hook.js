@@ -65,7 +65,7 @@ passport.use(
                                         return done(null, false, { message: error });
                                     } else if (response.statusCode != 204) {
                                         console.error('access to GH team failed: ', response.statusCode, response.body);
-                                        return done(null, false, { message: `User does not belong to the ${githubOrgTeam} team. Please contact your team admin and ask her to add you.` });
+                                        return done(null, false, { message: `User does not belong to the ${githubTeam} team. Please contact your team admin and ask her to add you.` });
                                     }
                                     // user belongs to the org/team
                                     done(null, user);
