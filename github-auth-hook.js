@@ -96,10 +96,12 @@ function enableGitHubOAuth(app) {
     // use custom callback http://www.passportjs.org/docs/authenticate/#custom-callback to better deal with error message
     app.get('/api/auth/callback', (req, res, next) => {
         passport.authenticate('github', (err, user, info) => {
-            // console.log(`Calling /api/auth/callback with session user=${user}, info=${info} and error=${err}`)
-            let message = info.message;
+            console.log(`Calling /api/auth/callback with session user=${user}, info=${info} and error=${err}`)
             if (!user) {
-                req.session.error = message;
+                if (info) {
+                    let message = info.message;
+                    req.session.error = message;
+                }
                 req.logout();
             } else {
                 req.session.error = null; // reset the error if the a previous session is used
@@ -107,6 +109,15 @@ function enableGitHubOAuth(app) {
             }
             return res.redirect(`${context}/`);
         })(req, res, next);
+    });
+    
+    app.get('/api/admin/user/logout', (req, res, next) => {
+        // without that route defined, unleash admin will redirect to logout without being proxy-aware
+        console.log('Log out');
+        if (req.session) {
+            req.session = null;
+        }
+        return res.redirect(`${context}/`);
     });
 
     app.use('/api/admin/', (req, res, next) => {
@@ -141,14 +152,6 @@ function enableGitHubOAuth(app) {
                 .end();
         }
     });
-    app.get('/api/admin/user/logout', (req, res, next) => {
-        // without that route defined, unleash admin will redirect to logout without being proxy-aware
-        console.log('Log out');
-        if (req.session) {
-            req.session = null;
-        }
-        return res.redirect(`${context}/`);
-});
 }
 
 module.exports = enableGitHubOAuth;
