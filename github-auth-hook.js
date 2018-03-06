@@ -20,8 +20,12 @@ passport.use(
         (accessToken, refreshToken, profile, done) => {
             if (!profile.emails) {
                 // user can choose to not display any email, then use a default one as unleash required it
-                profile.emails.push(`${displayName}@unknown.com`);
+                console.log(`${profile.displayName} has no email provided`);
+                profile.emails = [];
+                profile.emails.push({value: `${profile.displayName}@unknown.com`});
+                console.log(`Added ${profile.displayName}@unknown.com to profile emails: ${profile.emails[0].value}`);
             }
+            console.log(`name ${profile.displayName} email ${profile.emails[0].value}`)
             let user = new User({
                 name: profile.displayName,
                 email: profile.emails[0].value,
