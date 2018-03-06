@@ -9,7 +9,7 @@ if (devMode) {
         adminAuthentication: 'none',
     }).then(server => {
         console.log(
-            `Unleash started on http://localhost:${server.app.get('port')}`
+            `Unleash started on port ${server.app.get('port')}`
         );
     });  
 } else {
@@ -19,7 +19,7 @@ if (devMode) {
         preRouterHook: gitHubOAuth
     }).then(server => {
         console.log(
-            `Unleash started on http://localhost:${server.app.get('port')}`
+            `Unleash started on port ${server.app.get('port')}`
         );
     });
 }
