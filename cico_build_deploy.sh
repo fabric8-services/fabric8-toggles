@@ -44,6 +44,7 @@ yum -y install \
    make \
    git \
    curl \
+   epel-release \
    nodejs
 
 # run build: lint, unit test
