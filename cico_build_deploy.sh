@@ -38,11 +38,17 @@ function login() {
 /usr/sbin/setenforce 0
 
 # Get all the deps in
+
 yum -y install \
    docker \
    make \
    git \
-   curl
+   curl \
+   nodejs
+
+# run build: lint, unit test
+npm install
+npm run build
 
 service docker start
 

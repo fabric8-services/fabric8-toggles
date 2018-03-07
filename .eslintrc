@@ -1,0 +1,22 @@
+{
+    "extends": [
+        "finn",
+        "finn/node",
+        "finn-prettier"
+    ],
+    "parserOptions": {
+        "ecmaVersion": "2017"
+    },
+    "rules": {
+        "max-nested-callbacks": "off",
+        "new-cap": [
+            "error",
+            {
+                "capIsNewExceptions": [
+                    "Router",
+                    "Mitm"
+                ]
+            }
+        ]
+    }
+}
