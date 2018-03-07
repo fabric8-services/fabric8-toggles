@@ -47,6 +47,7 @@ yum -y install \
    nodejs
 
 # run build: lint, unit test
+echo 'Run nodejs lint and unit test'
 npm install
 npm run build
 
