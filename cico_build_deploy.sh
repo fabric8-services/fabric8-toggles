@@ -38,14 +38,12 @@ function login() {
 /usr/sbin/setenforce 0
 
 # Get all the deps in
-
+yum install -y epel-release && yum install -y nodejs && yum clean all
 yum -y install \
    docker \
    make \
    git \
-   curl \
-   epel-release \
-   nodejs
+   curl
 
 # run build: lint, unit test
 echo 'Run nodejs lint and unit test'
