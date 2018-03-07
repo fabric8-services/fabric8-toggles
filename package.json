@@ -8,7 +8,8 @@
 		"start:debug": "node --inspect-brk index.js",
 		"test:ci": "echo 'no tests for unleash-docker';",
 		"lint": "eslint .",
-		"build": "npm run lint"
+		"build": "npm run lint",
+		"test": "ava *.test.js"
 	},
 	"engines": {
 		"node": "8"
@@ -20,9 +21,11 @@
 		"unleash-server": "3.0.0"
 	},
 	"devDependencies": {
+		"ava": "^1.0.0-beta.3",
 		"eslint": "^4.18.2",
 		"eslint-config-finn": "^3.0.0",
 		"eslint-config-finn-prettier": "^3.0.1",
-		"prettier": "^1.11.1"
+		"prettier": "^1.11.1",
+		"supertest": "^3.0.0"
 	}
 }
