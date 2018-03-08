@@ -2,4 +2,8 @@ node_modules
 npm-debug
 .DS_Store
 *.yml
+.fabric8
+tmp/
 .idea/
+
+

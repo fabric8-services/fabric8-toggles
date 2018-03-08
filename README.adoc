@@ -11,17 +11,19 @@ npm install
 
 === Pre-requisites
 2 options to run the DB:
+
 * either Deploy on minishift see https://github.com/xcoulon/fabric8-minishift/blob/master/toggles-db.yml[toggles-db.yml]
 * or run locally postgres
 
 === Without authentification
-* to test in dev mode no GH auth/authz
+
+* Test in dev mode without GH auth/authz
 ```
 DEV_MODE=true DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb npm start
 ```
 where MINISHIFT_IP is where you DB is deployed and 31210 the port where it's running. It could be minishift or locally.
 
-* debug
+* Debug
 ```
 DEV_MODE=true DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb npm run start:debug
 ```
@@ -32,6 +34,7 @@ Open chrome with `chrome://inspect` and choose Remote Target to open a chrome to
 ==== pre-requisites
 
 You need to configure GH OAuth app to test it locally:
+
 1. Go to https://github.com/settings/applications/new[OAuth app]
 1. Create a new developer application, in the `Authorization callback URL`, 
 1. Enter the url `http://localhost:4242/api/auth/callback`.
@@ -47,5 +50,50 @@ To test with GH authorization targetting prod-preview GH teams
 DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb GITHUB_CLIENT_ID=YYY GITHUB_CLIENT_SECRET=XXX GITHUB_CALLBACK_URL=http://localhost:4242/api/auth/callback npm start
 ```
 
+
 == Deployment on minishift
-TODO
+
+=== Pre-requisites
+* Install https://docs.openshift.org/latest/minishift/getting-started/installing.html[Minishift]
+* Install OpenShift command oc
+* Start minishift
+```
+minishift start --memory=7000 --cpus=4 --disk-size=50g
+```
+on macOS:
+```
+minishift start --vm-driver=xhyve --memory=7000 --cpus=4 --disk-size=50g
+```
+* Point `oc` to Minishift
+```
+oc config use-context minishift
+oc login -u developer -p developer
+```
+=== Build docker image and push to minishift repo
+
+(optional) if you want to start delting any existing `fabric8` project in your minishift:
+```
+make clean-minishift
+```
+and once ready:
+
+```
+make push-minishift
+
+```
+> NOTE: To check the image was pushed to your minishift internal repo: `eval $(minishift docker-env)` and `docker images`
+
+=== Deploy to minishift
+As pre-requisites, make sure you have your GH OAuth app created.
+
+```
+GITHUB_CLIENT_ID=XXX GITHUB_CLIENT_SECRET=YYY GITHUB_CALLBACK_URL=http://toggles-fabric8.192.168.64.6.nip.io/api/auth/callback TOGGLES_ORG=push.registry.devshift.net/fabric8-services GITHUB_ORG=rhdt-toggles-test GITHUB_TEAM=toggles-admin-test TOGGLES_CONTEXT='' make deploy-minishift
+```
+to deploy to minishift using the CI?/CD image.
+
+> NOTE 1: If you want to use CI/CD image run `TOGGLES_ORG=registry.devshift.net/fabric8-services/fabric8-toggles make deploy-minishift`
+
+> NOTE 2: Pre-fix the target with relevant env variables:
+
+ * either with auth: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_CLIENT_SECRET`, `GITHUB_CALLBACK_URL`, `GITHUB_ORG`, `GITHUB_TEAM`.
+ * or without auth: `DEV_MODE`
