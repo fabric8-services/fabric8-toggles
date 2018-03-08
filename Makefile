@@ -16,20 +16,8 @@ OC_PASSWORD := developer
 all: clean-minishift push-minishift deploy-minishift ## Compiles binary and runs format and style checks
 
 
-.PHONY: init
-init: tmp ./tmp/init.touch
-
-./tmp/init.touch:
-	@echo "Initializing accounts"
-	@oc adm policy  --as system:admin add-cluster-role-to-user cluster-admin developer #make sure that `developer` account is cluster admin
-	@oc apply -f developer-user.yml
-	@touch ./tmp/init.touch
-
-tmp:
-	@mkdir ./tmp
-
 .PHONY: login-dev
-login-dev: init
+login-dev:
 	echo "logging on $(MINISHIFT_IP) with $(OC_USERNAME) account..."
 	@oc login --insecure-skip-tls-verify=true https://$(MINISHIFT_IP):8443 -u $(OC_USERNAME) -p $(OC_PASSWORD) 1>/dev/null
 	@oc whoami -t > tmp/developer.txt
@@ -47,7 +35,7 @@ push-minishift: login-dev create-project
 	eval $$(minishift docker-env) && docker login -u developer -p $(shell oc whoami -t) $(shell minishift openshift registry) && docker push $(shell minishift openshift registry)/${FABRIC8_PROJECT}/${REGISTRY_IMAGE}:latest
 
 .PHONY: deploy-minishift
-deploy-minishift: login-dev create-project ## deploy toggles server on minishift
+deploy-minishift: login-dev create-project push-minishift ## deploy toggles server on minishift
 	curl https://raw.githubusercontent.com/xcoulon/fabric8-minishift/master/toggles-db.yml -o toggles-db.yml
 	kedge apply -f toggles-db.yml
 	curl https://raw.githubusercontent.com/xcoulon/fabric8-minishift/master/toggles.yml -o toggles.yml
@@ -59,7 +47,7 @@ deploy-minishift: login-dev create-project ## deploy toggles server on minishift
 .PHONY: clean-minishift
 clean-minishift: login-dev ## removes the fabric8 project on Minishift
 	oc project fabric8 && oc delete project fabric8
-	#rm -rf toggles.yml toggles-db.yml
+	rm -rf toggles.yml toggles-db.yml
 
 .PHONY: help
 help: ## Prints this help

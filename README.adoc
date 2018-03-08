@@ -81,7 +81,7 @@ and once ready:
 make push-minishift
 
 ```
-> NOTE: To check the image was push to your minishift internal repo: `eval $(minishift docker-env)` and `docker images`
+> NOTE: To check the image was pushed to your minishift internal repo: `eval $(minishift docker-env)` and `docker images`
 
 === Deploy to minishift
 As pre-requisites, make sure you have your GH OAuth app created.
