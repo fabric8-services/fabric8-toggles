@@ -87,11 +87,13 @@ make push-minishift
 As pre-requisites, make sure you have your GH OAuth app created.
 
 ```
-make deploy-minishift
+GITHUB_CLIENT_ID=XXX GITHUB_CLIENT_SECRET=YYY GITHUB_CALLBACK_URL=http://toggles-fabric8.192.168.64.6.nip.io/api/auth/callback TOGGLES_ORG=push.registry.devshift.net/fabric8-services GITHUB_ORG=rhdt-toggles-test GITHUB_TEAM=toggles-admin-test TOGGLES_CONTEXT='' make deploy-minishift
 ```
+to deploy to minishift using the CI?/CD image.
 
 > NOTE 1: If you want to use CI/CD image run `TOGGLES_ORG=registry.devshift.net/fabric8-services/fabric8-toggles make deploy-minishift`
 
 > NOTE 2: Pre-fix the target with relevant env variables:
- * either with auth: GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_CLIENT_SECRET, GITHUB_CALLBACK_URL, GITHUB_ORG, GITHUB_TEAM.
- * or without auth: DEV_MODE
+
+ * either with auth: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_CLIENT_SECRET`, `GITHUB_CALLBACK_URL`, `GITHUB_ORG`, `GITHUB_TEAM`.
+ * or without auth: `DEV_MODE`

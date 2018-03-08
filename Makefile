@@ -38,7 +38,7 @@ login-dev: init
 ## the '-' at the beginning of the line will ignore failure of `oc project` if the project already exists.
 create-project:
 	@-oc new-project ${FABRIC8_PROJECT}
-	oc project fabric8
+	oc project ${FABRIC8_PROJECT}
 
 .PHONY: push-minishift
 push-minishift: login-dev create-project
@@ -51,11 +51,15 @@ deploy-minishift: login-dev create-project ## deploy toggles server on minishift
 	curl https://raw.githubusercontent.com/xcoulon/fabric8-minishift/master/toggles-db.yml -o toggles-db.yml
 	kedge apply -f toggles-db.yml
 	curl https://raw.githubusercontent.com/xcoulon/fabric8-minishift/master/toggles.yml -o toggles.yml
-	TOGGLES_ORG=$(TOGGLES_ORG) kedge apply -f toggles.yml
+	TOGGLES_ORG=$(TOGGLES_ORG) GITHUB_CLIENT_ID=$(GITHUB_CLIENT_ID) \
+	  GITHUB_CLIENT_SECRET=$(GITHUB_CLIENT_SECRET) \
+	  GITHUB_CALLBACK_URL=$(GITHUB_CALLBACK_URL) TOGGLES_CONTEXT=$(TOGGLES_CONTEXT) \
+	  GITHUB_ORG=$(GITHUB_ORG) GITHUB_TEAM=$(GITHUB_TEAM) kedge apply -f toggles.yml
 
 .PHONY: clean-minishift
 clean-minishift: login-dev ## removes the fabric8 project on Minishift
 	oc project fabric8 && oc delete project fabric8
+	#rm -rf toggles.yml toggles-db.yml
 
 .PHONY: help
 help: ## Prints this help
