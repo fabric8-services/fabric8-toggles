@@ -3,12 +3,20 @@
 const { test } = require('ava');
 const express = require('express');
 const request = require('supertest');
-const enableGitHubOAuth = require('./github-auth-hook');
+let app;
+let enableGitHubOAuth;
 
-test('should return 401 for the first call to /api/admin API', t => {
-    t.plan(1);
-    const app = express();
+test.beforeEach(() => {
+    process.env.GITHUB_CLIENT_ID = '123';
+    process.env.GITHUB_CLIENT_SECRET = 'secret';
+    process.env.GITHUB_CALLBACK_URL = 'http://call.me.back';
+    app = express();
+    enableGitHubOAuth = require('./github-auth-hook');
     enableGitHubOAuth(app);
+});
+
+test('should return 401 for the first call to /api/admin API', async t => {
+    t.plan(1);
 
     return request(app)
         .get(`/api/admin`)
@@ -22,10 +30,8 @@ test('should return 401 for the first call to /api/admin API', t => {
         });
 });
 
-test('should redirect to GH login page', t => {
+test('should redirect to GH login page', async t => {
     t.plan(3);
-    const app = express();
-    enableGitHubOAuth(app);
 
     return request(app)
         .get(`/api/admin/login`)
@@ -37,10 +43,8 @@ test('should redirect to GH login page', t => {
         });
 });
 
-test('should go back to callback', t => {
+test('should go back to callback', async t => {
     t.plan(3);
-    const app = express();
-    enableGitHubOAuth(app);
 
     return request(app)
         .get(`/api/auth/callback`)
