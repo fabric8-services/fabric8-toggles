@@ -4,7 +4,7 @@ LABEL maintainer="Aslak Knutsen <aslak@redhat.com>"
 ENV F8_USER_NAME=fabric8
 RUN useradd  -s /bin/bash ${F8_USER_NAME}
 
-RUN yum install -y epel-release && yum install -y nodejs && yum clean all 
+RUN yum install -y epel-release && yum install -y nodejs git && yum clean all
 
 WORKDIR /home/${F8_USER_NAME}
 COPY package.json .
