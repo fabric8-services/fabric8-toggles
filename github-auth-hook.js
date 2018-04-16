@@ -160,15 +160,6 @@ function enableGitHubOAuth(app) {
         })(req, res, next);
     });
 
-    app.get('/api/admin/user/logout', (req, res) => {
-        // without that route defined, unleash admin will redirect to logout without being proxy-aware
-        console.log('Log out');
-        if (req.session) {
-            req.session = null;
-        }
-        return res.redirect(`${context}/`);
-    });
-
     app.use('/api/admin/', (req, res, next) => {
         // console.log(`Calling /api/admin with session user=${req.session.user} and error=${req.session.error}`)
         if (req.session && req.session.error) {
