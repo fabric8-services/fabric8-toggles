@@ -909,7 +909,7 @@
 				"strip-ansi": "4.0.0",
 				"strip-bom-buf": "1.0.0",
 				"supertap": "1.0.0",
-				"supports-color": "5.3.0",
+				"supports-color": "5.4.0",
 				"trim-off-newlines": "1.0.1",
 				"unique-temp-dir": "1.0.0",
 				"update-notifier": "2.5.0"
@@ -1491,7 +1491,7 @@
 			"requires": {
 				"ansi-styles": "3.2.1",
 				"escape-string-regexp": "1.0.5",
-				"supports-color": "5.3.0"
+				"supports-color": "5.4.0"
 			}
 		},
 		"chardet": {
@@ -2929,20 +2929,20 @@
 			"integrity": "sha1-Ys8SAjTGg3hdkCNIqADvPgzCC8A="
 		},
 		"f8-unleash-frontend": {
-			"version": "3.0.3",
-			"resolved": "https://registry.npmjs.org/f8-unleash-frontend/-/f8-unleash-frontend-3.0.3.tgz",
-			"integrity": "sha512-pnt3mMgckO80LZCzwdE/7xENc0tubIqD9Smfha4wbec4RbxeCjWo0lonw8fcmFbIHNxEALFcTHpESnx3E2++Dg==",
+			"version": "3.0.5",
+			"resolved": "https://registry.npmjs.org/f8-unleash-frontend/-/f8-unleash-frontend-3.0.5.tgz",
+			"integrity": "sha512-HuWutkZOY7L6lG4XK0shwPNeaSCgjXFREwBjI+EIbz+dowXAYuq3ffuxIiy1v+ihwC8trCtVn3ebgx95mT1Igw==",
 			"requires": {
 				"debug": "3.1.0",
 				"immutable": "3.8.2",
 				"normalize.css": "8.0.0",
 				"prop-types": "15.6.1",
-				"react": "16.3.1",
+				"react": "16.3.2",
 				"react-dnd": "2.6.0",
 				"react-dnd-html5-backend": "2.6.0",
-				"react-dom": "16.3.1",
+				"react-dom": "16.3.2",
 				"react-mdl": "1.11.0",
-				"react-modal": "3.3.2",
+				"react-modal": "3.4.1",
 				"react-redux": "5.0.7",
 				"react-router": "3.2.1",
 				"react-router-scroll": "0.4.4",
@@ -6049,9 +6049,9 @@
 			"dev": true
 		},
 		"joi": {
-			"version": "13.1.2",
-			"resolved": "https://registry.npmjs.org/joi/-/joi-13.1.2.tgz",
-			"integrity": "sha512-bZZSQYW5lPXenOfENvgCBPb9+H6E6MeNWcMtikI04fKphj5tvFL9TOb+H2apJzbCrRw/jebjTH8z6IHLpBytGg==",
+			"version": "13.2.0",
+			"resolved": "https://registry.npmjs.org/joi/-/joi-13.2.0.tgz",
+			"integrity": "sha512-VUzQwyCrmT2lIpxBCYq26dcK9veCQzDh84gQnCtaxCa8ePohX8JZVVsIb+E66kCUUcIvzeIpifa6eZuzqTZ3NA==",
 			"requires": {
 				"hoek": "5.0.3",
 				"isemail": "3.1.2",
@@ -8427,9 +8427,9 @@
 			"dev": true
 		},
 		"prettier": {
-			"version": "1.12.0",
-			"resolved": "https://registry.npmjs.org/prettier/-/prettier-1.12.0.tgz",
-			"integrity": "sha512-Wz0SMncgaglBzDcohH3ZIAi4nVpzOIEweFzCOmgVEoRSeO72b4dcKGfgxoRGVMaFlh1r7dlVaJ+f3CIHfeH6xg==",
+			"version": "1.12.1",
+			"resolved": "https://registry.npmjs.org/prettier/-/prettier-1.12.1.tgz",
+			"integrity": "sha1-wa0g6APndJ+vkFpAnSNn4Gu+cyU=",
 			"dev": true
 		},
 		"pretty-ms": {
@@ -8670,9 +8670,9 @@
 			}
 		},
 		"react": {
-			"version": "16.3.1",
-			"resolved": "https://registry.npmjs.org/react/-/react-16.3.1.tgz",
-			"integrity": "sha512-NbkxN9jsZ6+G+ICsLdC7/wUD26uNbvKU/RAxEWgc9kcdKvROt+5d5j2cNQm5PSFTQ4WNGsR3pa4qL2Q0/WSy1w==",
+			"version": "16.3.2",
+			"resolved": "https://registry.npmjs.org/react/-/react-16.3.2.tgz",
+			"integrity": "sha512-o5GPdkhciQ3cEph6qgvYB7LTOHw/GB0qRI6ZFNugj49qJCFfgHwVNjZ5u+b7nif4vOeMIOuYj3CeYe2IBD74lg==",
 			"requires": {
 				"fbjs": "0.8.16",
 				"loose-envify": "1.3.1",
@@ -8702,15 +8702,20 @@
 			}
 		},
 		"react-dom": {
-			"version": "16.3.1",
-			"resolved": "https://registry.npmjs.org/react-dom/-/react-dom-16.3.1.tgz",
-			"integrity": "sha512-2Infg89vzahq8nfVi1GkjPqq0vrBvf0f3T0+dTtyjq4f6HKOqKixAK25Vr593O3QTx4kw/vmUtAJwerlevNWOA==",
+			"version": "16.3.2",
+			"resolved": "https://registry.npmjs.org/react-dom/-/react-dom-16.3.2.tgz",
+			"integrity": "sha512-MMPko3zYncNrz/7gG17wJWUREZDvskZHXOwbttzl0F0L3wDmToyuETuo/r8Y5yvDejwYcRyWI1lvVBjLJWFwKA==",
 			"requires": {
 				"fbjs": "0.8.16",
 				"loose-envify": "1.3.1",
 				"object-assign": "4.1.1",
 				"prop-types": "15.6.1"
 			}
+		},
+		"react-lifecycles-compat": {
+			"version": "3.0.2",
+			"resolved": "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.2.tgz",
+			"integrity": "sha512-pbZOSMVVkvppW7XRn9fcHK5OgEDnYLwMva7P6TgS44/SN9uGGjfh3Z1c8tomO+y4IsHQ6Fsz2EGwmE7sMeNZgQ=="
 		},
 		"react-mdl": {
 			"version": "1.11.0",
@@ -8724,12 +8729,13 @@
 			}
 		},
 		"react-modal": {
-			"version": "3.3.2",
-			"resolved": "https://registry.npmjs.org/react-modal/-/react-modal-3.3.2.tgz",
-			"integrity": "sha512-DLrmPG9PyXWSNA2ve1LttnNRE9Umy3u3awFeK+72dLOksLM+EoTg8Z2h/i/DV3O8ZGvnEhacjAVXdZuRDGvaag==",
+			"version": "3.4.1",
+			"resolved": "https://registry.npmjs.org/react-modal/-/react-modal-3.4.1.tgz",
+			"integrity": "sha512-xBChRXwBSa41jV/pXS3btAZqno3BJk1kK/fUBlyF9vvaDoULLFeSQKW/tfwIadEhNCaoSKN4hIdlowvOmC34Gg==",
 			"requires": {
 				"exenv": "1.2.2",
 				"prop-types": "15.6.1",
+				"react-lifecycles-compat": "3.0.2",
 				"warning": "3.0.0"
 			}
 		},
@@ -9860,9 +9866,9 @@
 			}
 		},
 		"supports-color": {
-			"version": "5.3.0",
-			"resolved": "https://registry.npmjs.org/supports-color/-/supports-color-5.3.0.tgz",
-			"integrity": "sha512-0aP01LLIskjKs3lq52EC0aGBAJhLq7B2Rd8HC/DR/PtNNpcLilNmHC12O+hu0usQpo7wtHNRqtrhBwtDb0+dNg==",
+			"version": "5.4.0",
+			"resolved": "https://registry.npmjs.org/supports-color/-/supports-color-5.4.0.tgz",
+			"integrity": "sha512-zjaXglF5nnWpsq470jSv6P9DwPvgLkuapYmfDm3JWOm0vkNTVF2tI4UrN2r6jH1qM/uc/WtxYY1hYoA2dOKj5w==",
 			"requires": {
 				"has-flag": "3.0.0"
 			}
@@ -10267,10 +10273,10 @@
 				"errorhandler": "1.5.0",
 				"express": "4.16.3",
 				"express-validator": "5.1.2",
-				"f8-unleash-frontend": "3.0.3",
+				"f8-unleash-frontend": "3.0.5",
 				"gravatar": "1.6.0",
 				"install": "0.11.0",
-				"joi": "13.1.2",
+				"joi": "13.2.0",
 				"knex": "0.14.6",
 				"log4js": "2.5.3",
 				"moment": "2.22.1",
