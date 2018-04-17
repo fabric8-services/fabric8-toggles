@@ -97,3 +97,22 @@ to deploy to minishift using the CI?/CD image.
 
  * either with auth: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `GITHUB_CLIENT_SECRET`, `GITHUB_CALLBACK_URL`, `GITHUB_ORG`, `GITHUB_TEAM`.
  * or without auth: `DEV_MODE`
+
+
+== Release
+
+`fabric8-toggles` is a wrapper around https://github.com/Unleash/unleash[unleash-server] which depends on https://github.com/Unleash/unleash-frontend[unleash-frontent] upstream projects.
+When we need different release cycle we use https://www.npmjs.com/package/f8-unleash-frontend[forked npm releases] until upstream projects released latest content.
+
+=== Release unleash-frontent
+
+```
+npm login
+npm publish
+```
+
+> NOTE: make sure unelash-server is pointing to your unleash-frontend release.
+
+=== Release unleash
+
+Atm, we point to github branch to point to forked unleash-frontent release.
