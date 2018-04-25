@@ -1,0 +1,22 @@
+FROM prod.registry.devshift.net/osio-prod/base/nodejs:latest
+LABEL maintainer "Devtools <devtools@redhat.com>"
+LABEL author "Devtools <devtools@redhat.com>"
+
+ENV F8_USER_NAME=fabric8
+RUN useradd  -s /bin/bash ${F8_USER_NAME}
+
+WORKDIR /home/${F8_USER_NAME}
+COPY package.json .
+RUN npm install --production
+
+COPY . .
+
+RUN chmod -R +777 /home/${F8_USER_NAME}
+
+COPY ./node+pmcd.sh /node+pmcd.sh
+EXPOSE 44321
+
+USER ${F8_USER_NAME}
+EXPOSE 8080
+
+CMD /node+pmcd.sh

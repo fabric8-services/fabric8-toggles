@@ -9,9 +9,9 @@ set -e
 REGISTRY="push.registry.devshift.net"
 
 function tag_push() {
-  TARGET=$1
-  docker tag f8toggles-deploy $TARGET
-  docker push $TARGET
+  local tag=$1
+  docker tag f8toggles-deploy $tag
+  docker push $tag
 }
 
 # Source environment variables of the jenkins slave
@@ -35,7 +35,7 @@ function login() {
 }
 
  # We need to disable selinux for now, XXX
-/usr/sbin/setenforce 0
+/usr/sbin/setenforce 0 || :
 
 # Get all the deps in
 yum install -y epel-release && yum install -y nodejs && yum clean all
@@ -55,10 +55,18 @@ service docker start
 load_jenkins_vars
 TAG=$(echo $GIT_COMMIT | cut -c1-${DEVSHIFT_TAG_LEN})
 
-docker build -t f8toggles-deploy -f Dockerfile .
-
 login
-tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:$TAG
-tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:latest
+
+if [ "$TARGET" = "rhel" ]; then
+  docker build -t f8toggles-deploy -f Dockerfile.rhel .
+
+  tag_push ${REGISTRY}/osio-prod/fabric8-services/fabric8-toggles:$TAG
+  tag_push ${REGISTRY}/osio-prod/fabric8-services/fabric8-toggles:latest
+else
+  docker build -t f8toggles-deploy -f Dockerfile .
+
+  tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:$TAG
+  tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:latest
+fi
 
 echo 'CICO: Image pushed, ready to update deployed app'
