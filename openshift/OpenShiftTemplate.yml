@@ -67,7 +67,7 @@ objects:
               secretKeyRef:
                 name: f8toggles
                 key: github.auth.team                                           
-          image: registry.devshift.net/fabric8-services/fabric8-toggles:${IMAGE_TAG}
+          image: ${IMAGE}:${IMAGE_TAG}
           imagePullPolicy: Always
           name: f8toggles
           ports:
@@ -110,5 +110,7 @@ objects:
     selector:
       deploymentconfig: f8toggles
 parameters:
+- name: IMAGE
+  value: registry.devshift.net/fabric8-services/fabric8-toggles
 - name: IMAGE_TAG
   value: latest
