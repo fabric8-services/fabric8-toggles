@@ -111,6 +111,6 @@ objects:
       deploymentconfig: f8toggles
 parameters:
 - name: IMAGE
-  value: registry.devshift.net/fabric8-services/fabric8-toggles
+  value: quay.io/openshiftio/rhel-fabric8-services-fabric8-toggles
 - name: IMAGE_TAG
   value: latest
