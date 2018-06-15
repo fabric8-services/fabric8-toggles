@@ -6,7 +6,7 @@ set -x
 # Exit on error
 set -e
 
-REGISTRY="push.registry.devshift.net"
+REGISTRY="quay.io"
 
 function tag_push() {
   local tag=$1
@@ -17,18 +17,14 @@ function tag_push() {
 # Source environment variables of the jenkins slave
 # that might interest this worker.
 function load_jenkins_vars() {
-  if [ -e "jenkins-env" ]; then
-    cat jenkins-env \
-      | grep -E "(DEVSHIFT_TAG_LEN|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|JENKINS_URL|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId)=" \
-      | sed 's/^/export /g' \
-      > ~/.jenkins-env
-    source ~/.jenkins-env
+  if [ -e "jenkins-env.json" ]; then
+    eval "$(./env-toolkit load -f jenkins-env.json DEVSHIFT_TAG_LEN QUAY_USERNAME QUAY_PASSWORD JENKINS_URL GIT_BRANCH GIT_COMMIT BUILD_NUMBER ghprbSourceBranch ghprbActualCommit BUILD_URL ghprbPullId)"
   fi
 }
 
 function login() {
-  if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
-    docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${REGISTRY}
+  if [ -n "${QUAY_USERNAME}" -a -n "${QUAY_PASSWORD}" ]; then
+    docker login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${REGISTRY}
   else
     echo "Could not login, missing credentials for the registry"
   fi
@@ -60,13 +56,13 @@ login
 if [ "$TARGET" = "rhel" ]; then
   docker build -t f8toggles-deploy -f Dockerfile.rhel .
 
-  tag_push ${REGISTRY}/osio-prod/fabric8-services/fabric8-toggles:$TAG
-  tag_push ${REGISTRY}/osio-prod/fabric8-services/fabric8-toggles:latest
+  tag_push ${REGISTRY}/openshiftio/rhel-fabric8-services-fabric8-toggles:$TAG
+  tag_push ${REGISTRY}/openshiftio/rhel-fabric8-services-fabric8-toggles:latest
 else
   docker build -t f8toggles-deploy -f Dockerfile .
 
-  tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:$TAG
-  tag_push ${REGISTRY}/fabric8-services/fabric8-toggles:latest
+  tag_push ${REGISTRY}/openshiftio/fabric8-services-fabric8-toggles:$TAG
+  tag_push ${REGISTRY}/openshiftio/fabric8-services-fabric8-toggles:latest
 fi
 
 echo 'CICO: Image pushed, ready to update deployed app'
