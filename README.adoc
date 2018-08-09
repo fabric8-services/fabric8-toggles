@@ -1,6 +1,6 @@
 = Fabric8 Toggles
 
-Unleash-server bundled for Openshift deployment. Loosely based on https://github.com/Unleash/unleash-docker
+Unleash-server bundled for OpenShift deployment. Loosely based on https://github.com/Unleash/unleash-docker
 
 == Build
 ```
@@ -15,7 +15,7 @@ npm install
 * either Deploy on minishift see https://github.com/xcoulon/fabric8-minishift/blob/master/toggles-db.yml[toggles-db.yml]
 * or run locally postgres
 
-=== Without authentification
+=== Without authentication
 
 * Test in dev mode without GH auth/authz
 ```
@@ -44,7 +44,7 @@ You'll get a page with `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
 > NOTE: The URL you enter should should match the env variable `GITHUB_CALLBACK_URL` you'll use to start the server 
 
 === Run
-To test with GH authorization targetting prod-preview GH teams
+To test with GH authorization targeting prod-preview GH teams
 
 ```
 DATABASE_URL=postgres://user:password@MINISHIFT_IP:31210/unleashdb GITHUB_CLIENT_ID=YYY GITHUB_CLIENT_SECRET=XXX GITHUB_CALLBACK_URL=http://localhost:4242/api/auth/callback npm start
@@ -71,7 +71,7 @@ oc login -u developer -p developer
 ```
 === Build docker image and push to minishift repo
 
-(optional) if you want to start delting any existing `fabric8` project in your minishift:
+(optional) if you want to start deleting any existing `fabric8` project in your minishift:
 ```
 make clean-minishift
 ```
@@ -101,7 +101,7 @@ to deploy to minishift using the CI?/CD image.
 
 == Release
 
-`fabric8-toggles` is a wrapper around https://github.com/Unleash/unleash[unleash-server] which depends on https://github.com/Unleash/unleash-frontend[unleash-frontent] upstream projects.
+`fabric8-toggles` is a wrapper around https://github.com/Unleash/unleash[unleash-server] which depends on https://github.com/Unleash/unleash-frontend[unleash-frontend] upstream projects.
 When we need different release cycle we use https://www.npmjs.com/package/f8-unleash-frontend[forked npm releases] until upstream projects released latest content.
 
 === Release unleash-frontent
@@ -111,8 +111,8 @@ npm login
 npm publish
 ```
 
-> NOTE: make sure unelash-server is pointing to your unleash-frontend release.
+> NOTE: make sure unleash-server is pointing to your unleash-frontend release.
 
 === Release unleash
 
-Atm, we point to github branch to point to forked unleash-frontent release.
+At the moment, we point to github branch to point to forked unleash-frontend release.
