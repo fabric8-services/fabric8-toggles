@@ -95,6 +95,7 @@ objects:
             timeoutSeconds: 1
           resources:
             limits:
+              cpu: 400m
               memory: 1Gi
     triggers:
     - type: ConfigChange
