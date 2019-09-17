@@ -94,6 +94,9 @@ objects:
             successThreshold: 1
             timeoutSeconds: 1
           resources:
+            requests:
+              cpu: 3m
+              memory: 80Mi
             limits:
               cpu: 400m
               memory: 1Gi
